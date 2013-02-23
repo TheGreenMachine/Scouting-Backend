@@ -1,4 +1,6 @@
-module Parser where
+module Parser (
+  parseTeam
+  ) where
 import Safe
 import Control.Monad (mapM) -- When do I not import this?
 import TeamData
@@ -44,11 +46,8 @@ getPenalties csv = do
     fields
   return $ filter (/="none") penalties
 
-
 averageField :: Int -> TeamCSV -> Maybe Double
 averageField n csv = do
   let fields = map words . lines $ csv
   scores <- mapM (\line -> atMay line n >>= readMay ) fields :: Maybe [Double]
   return $ (sum scores) / (fromIntegral $ length scores)
-
-testFile = readFile "samples/1.txt" >>= print . parseTeam 1
