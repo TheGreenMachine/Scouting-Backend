@@ -9,6 +9,7 @@ import GameData
 type TeamCSV = String
 type TeamNum = Int
 ---------------------- Team Parser -------------------------------
+-- | Takes a csv file representing a team and parses it to a TeamInfo. If any errors occur, Nothing is returned.
 parseTeam :: TeamNum -> TeamCSV -> Maybe TeamInfo
 parseTeam num csv = do
   auto      <- getAuto csv
@@ -56,6 +57,7 @@ averageField n csv = do
 ---------------------------- Match Parser --------------------------------------
 type MatchNum = Int
 type MatchCSV = String
+-- | Similar to parseTeam but instead parses a csv representing a match
 parseMatch :: MatchNum -> MatchCSV -> Maybe MatchInfo
 parseMatch num csv = do
   let [firstAlliance, secondAlliance] = lines csv
