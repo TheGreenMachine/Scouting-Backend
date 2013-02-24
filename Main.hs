@@ -1,6 +1,7 @@
 module Main where
 import GameLoader
 import Data.String.Utils
+import Website
 main = do
   putStrLn "Welcome to the HSB.\nPlease standby..."
   putStrLn "Loading Team Info"
@@ -9,3 +10,4 @@ main = do
   putStrLn "Finished loading team info. CSV was written to 'teamdata.csv'"
   --Build Website--
   putStrLn "Building the Static Website..."
+  generateSite teamInfos

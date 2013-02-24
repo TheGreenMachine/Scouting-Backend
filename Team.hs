@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Teams where
+module Team where
 import System.Directory
 import GameData
 import Control.Monad
