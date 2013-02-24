@@ -64,4 +64,4 @@ parseMatch num csv = do
     parseAlliance line = do
       let [color, team1, team2, team3, score] = words line
       c <- readMay color >>= \n -> return (if n == 0 then Blue else Red)
-      return $ Alliance c team1 team2 team3 score
+      return $ Alliance (show num) c team1 team2 team3 score

@@ -20,6 +20,7 @@ instance Show TeamInfo where
 data Color = Red | Blue
                    deriving(Eq, Show)
 data Alliance = Alliance {
+  round :: String,
   color :: Color,
   team1 :: String,
   team2 :: String,
