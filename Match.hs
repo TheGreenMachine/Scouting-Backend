@@ -17,7 +17,8 @@ makePage :: MatchInfo -> IO ()
 makePage match = do
   let html = template match
   let MatchInfo (a, _) = match
-  writeFile ("site/matches/" ++ round a) $ renderHtml html
+  writeFile ("site/matches/" ++ round a ++ ".html") $ renderHtml html
+  putStrLn $ "Generate page for match " ++ round a
 
 template :: MatchInfo -> Html
 template (MatchInfo (a1, a2)) = docTypeHtml $ do
@@ -39,4 +40,4 @@ allTemplate (Alliance roundNum
     h2 . toHtml $ show colorT
     h3.toHtml $ "Score: "++scoreT
     h3 "Teams"
-    ul $ mapM_ toHtml [team1Num,team2Num,team3Num]
+    ul $ mapM_ (li . toHtml) [team1Num,team2Num,team3Num]

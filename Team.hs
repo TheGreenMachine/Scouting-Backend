@@ -19,9 +19,9 @@ makePage team = do
   if hasImage
      then copyFile ("images/"++image) ("site/"++image)
      else putStrLn $ "No image was found for " ++ show (number team)
-  comments <- readFile (show $ number team)
+  comments <- return "" --readFile (show $ number team)
   let html = template hasImage comments team
-  writeFile ("site/"++(show $ number team)) $ renderHtml html
+  writeFile ("site/"++(show $ number team)++".html") $ renderHtml html
   putStr "Wrote out page for team "
   print $ number team
 
@@ -52,4 +52,4 @@ template hasImage comments (TeamInfo num
     p $ toHtml comments
     h3 "Matches"
     ul $ mapM_
-      (\n -> li $ a ! href (toValue $ "matches/"++show n++".txt") $ (toHtml n)) matchList
+      (\n -> li $ a ! href (toValue $ "matches/"++show n++".html") $ (toHtml n)) matchList
