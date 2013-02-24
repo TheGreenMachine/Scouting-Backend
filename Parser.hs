@@ -1,13 +1,14 @@
 module Parser (
-  parseTeam
+  parseTeam,
+  parseMatch
   ) where
 import Safe
-import Control.Monad (mapM) -- When do I not import this?
-import TeamData
+import Control.Monad (mapM, liftM, liftM2) -- When do I not import this?
+import GameData
 
 type TeamCSV = String
 type TeamNum = Int
-
+---------------------- Team Parser -------------------------------
 parseTeam :: TeamNum -> TeamCSV -> Maybe TeamInfo
 parseTeam num csv = do
   auto      <- getAuto csv
@@ -51,3 +52,16 @@ averageField n csv = do
   let fields = map words . lines $ csv
   scores <- mapM (\line -> atMay line n >>= readMay ) fields :: Maybe [Double]
   return $ (sum scores) / (fromIntegral $ length scores)
+
+---------------------------- Match Parser --------------------------------------
+type MatchNum = Int
+type MatchCSV = String
+parseMatch :: MatchNum -> MatchCSV -> Maybe MatchInfo
+parseMatch num csv = do
+  let [firstAlliance, secondAlliance] = lines csv
+  liftM MatchInfo $ liftM2 (,) (parseAlliance firstAlliance) (parseAlliance secondAlliance)
+  where
+    parseAlliance line = do
+      let [color, team1, team2, team3, score] = words line
+      c <- readMay color >>= \n -> return (if n == 0 then Blue else Red)
+      return $ Alliance c team1 team2 team3 score

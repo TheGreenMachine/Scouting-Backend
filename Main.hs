@@ -1,5 +1,5 @@
 module Main where
-import TeamLoader
+import GameLoader
 import Data.String.Utils
 main = do
   putStrLn "Welcome to the HSB.\nPlease standby..."
