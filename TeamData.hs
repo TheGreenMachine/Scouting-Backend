@@ -1,7 +1,7 @@
 module TeamData (
   TeamInfo(..)
   ) where
-
+import Data.String.Utils
 data TeamInfo = TeamInfo {
   number    :: Int,
   auto      :: Double,
@@ -10,4 +10,6 @@ data TeamInfo = TeamInfo {
   climb     :: Double,
   penalties :: [String],
   matches   :: [Int]
-  } deriving Show
+  }
+instance Show TeamInfo where
+  show (TeamInfo num au ma didClimb cl ps _) = join " " [show num, show au, show ma, show didClimb, show cl, join ":" ps]
