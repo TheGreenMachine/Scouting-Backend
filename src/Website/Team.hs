@@ -39,6 +39,7 @@ template hasImage comments (TeamInfo num
   H.head $ do
     H.title . toHtml $ "Team "++numString
   body $ do
+    a!href "index.html" $ "Back to Main Index"
     h1 . toHtml $ "Team "++numString
     if hasImage
       then img ! src (toValue $ numString++".jpg")
