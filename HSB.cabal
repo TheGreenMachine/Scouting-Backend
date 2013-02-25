@@ -1,0 +1,28 @@
+name:                HSB
+
+version:             0.1
+
+synopsis:            A static site generator for the Green Machine's scouting data
+
+license:             BSD3
+
+license-file:        LICENSE
+
+author:              Danny Gratzer
+
+maintainer:          danny.gratzer@gmail.com
+
+build-type:          Simple
+
+cabal-version:       >=1.8
+
+
+executable HSB
+  main-is:             Main.hs
+
+  -- Modules included in this executable, other than Main.
+  -- other-modules:
+
+  build-depends:       base ==4.3.*, directory ==1.1.*, blaze-html ==0.4.*, MissingH ==1.1.*, filepath ==1.2.*, safe ==0.3.*
+
+  hs-source-dirs:      src
