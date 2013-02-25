@@ -2,6 +2,7 @@ module Website where
 import GameLoader
 import Match
 import Team
+import Index
 import System.Directory
 import GameData
 
@@ -16,3 +17,5 @@ generateSite teams = do
   genMatchPages matches
   putStrLn "Generating Team Pages"
   genTeamPages teams
+  putStrLn "Generating Index"
+  genIndex teams
