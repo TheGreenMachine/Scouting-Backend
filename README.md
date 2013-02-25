@@ -1,4 +1,4 @@
 Scouting-Backend
 ================
 
-HSB -- The Haskell Scouting Backend for the greenmachine. It creates a static website for great good.
+HSB -- The Haskell Scouting Backend for The Green Machine. It creates a static website for great good.
