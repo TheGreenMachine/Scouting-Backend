@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Index where
+module Website.Index where
 import Control.Monad
 import Data.List
 import Data.Ord
@@ -12,16 +12,28 @@ import GameData
 genIndex :: [TeamInfo] -> IO ()
 genIndex teams = do
   let orderedList = sortBy (comparing snd) $ zip teams (map average teams)
-  let html = template $ map (\(a, b) -> (number a, b)) orderedList
+  let html = template orderedList
   writeFile "site/index.html" $ renderHtml html
   where
     average team =  (sum . map ($team) $ [auto, main, climb]) / 3
-template :: [(Int, Double)] -> Html
+template :: [(TeamInfo, Double)] -> Html
 template list = docTypeHtml $ do
   H.head $ do
     H.title "Home"
   body $ do
     h1 "Main Team Index"
-    ol $ mapM_
-      (\num -> li $ a ! href (toValue $ show (fst num) ++ ".html") $ toHtml $ showTuple num) list
+    table ! customAttribute "border" "1" $ do
+      th "Name"
+      th "Average"
+      th "Autonomous"
+      th "Teleop"
+      th "Climbing"
+      mapM_
+        (\(info, avg) -> tr $ do
+                         td (a ! href (toValue $ show (number info) ++ ".html") $ toHtml $ number info)
+                         td . toHtml $ (truncate avg :: Int)
+                         td . toHtml $ (truncate $ auto  info :: Int)
+                         td . toHtml $ (truncate $ main  info :: Int)
+                         td . toHtml $ (truncate $ climb info :: Int))
+        list
   where showTuple (a, b) = show a ++ " : " ++ show b

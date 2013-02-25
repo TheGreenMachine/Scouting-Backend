@@ -2,7 +2,7 @@ module Website where
 import GameLoader
 import Website.Match
 import Website.Team
-import Index
+import Website.Index
 import System.Directory
 import GameData
 
