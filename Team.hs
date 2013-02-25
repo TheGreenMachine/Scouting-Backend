@@ -19,7 +19,9 @@ makePage team = do
   if hasImage
      then copyFile ("images/"++image) ("site/"++image)
      else putStrLn $ "No image was found for " ++ show (number team)
-  comments <- return "" --readFile (show $ number team)
+  comments <- catch
+              (readFile (show $ number team)) $
+              \_ -> return ""
   let html = template hasImage comments team
   writeFile ("site/"++(show $ number team)++".html") $ renderHtml html
   putStr "Wrote out page for team "
