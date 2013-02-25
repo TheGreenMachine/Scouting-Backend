@@ -1,3 +1,4 @@
 teamdata.csv
 *.o
 *.hi
+/dist
