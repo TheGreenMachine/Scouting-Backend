@@ -40,4 +40,4 @@ allTemplate (Alliance roundNum
     h2 . toHtml $ show colorT
     h3.toHtml $ "Score: "++scoreT
     h3 "Teams"
-    ul $ mapM_ (li . toHtml) [team1Num,team2Num,team3Num]
+    ul $ mapM_ (\num -> li $ a ! href (toValue $ "../"++num++".html") $ toHtml num) [team1Num,team2Num,team3Num]
