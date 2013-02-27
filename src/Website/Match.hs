@@ -6,7 +6,7 @@ import Website.Template
 import Control.Monad
 import Text.Blaze.Html5 hiding (map)
 import Text.Blaze.Html5.Attributes
-import Text.Blaze.Renderer.String
+import Text.Blaze.Html.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Prelude hiding (round)

@@ -28,18 +28,17 @@ wrapTemplate :: TemplateToken  -- | The token containing all data for the menus
                 -> Html        -- | The HTML to be wrapped.
                 -> Html        -- | The wrapped HTML
 wrapTemplate token page = docTypeHtml $ do
-  div ! customAttribute "class" "right-menu" $ do
-    ul . mapM_ (\team -> li
-                         (a ! href (toValue $ (path token) ++ show (number team) ++ ".html") $ toHtml $ number team)) $
-      (teamList token)
-  div ! customAttribute "class" "left-menu" $ do
-    ul . mapM_ (\(MatchInfo (a1, a2)) -> li
-                                         (a ! href (toValue $ (path token) ++ "matches/" ++ round a1 ++ ".html") $ toHtml (round a1))) $
-      (matchList token)
-  div ! customAttribute "class" "top-menu" $ do
-    a ! href (toValue $ (path token) ++ "index.html") $ " Average "
-    a ! href (toValue $ (path token) ++ "auto.html")  $ " Autonomous "
-    a ! href (toValue $ (path token) ++ "main.html")  $ " Teleop "
-    a ! href (toValue $ (path token) ++ "climb.html") $ " Climbing "
+  link ! rel "stylesheet" ! type_ "text/css" ! href (toValue $ (path token) ++ "screen.css")
+  ul ! A.id "nav-left" $ mapM_ (\team -> li
+                       (a ! href (toValue $ (path token) ++ show (number team) ++ ".html") $ toHtml $ number team)) $
+    (teamList token)
+  ul ! A.id "nav-right" $ mapM_ (\(MatchInfo (a1, a2)) -> li
+                                       (a ! href (toValue $ (path token) ++ "matches/" ++ round a1 ++ ".html") $ toHtml (round a1))) $
+    (matchList token)
+  ul ! A.id "nav-top" $ do
+    li $ a ! href (toValue $ (path token) ++ "index.html") $ " Average "
+    li $ a ! href (toValue $ (path token) ++ "auto.html")  $ " Autonomous "
+    li $ a ! href (toValue $ (path token) ++ "main.html")  $ " Teleop "
+    li $ a ! href (toValue $ (path token) ++ "climb.html") $ " Climbing "
   div ! customAttribute "class" "main-page" $ do
     page

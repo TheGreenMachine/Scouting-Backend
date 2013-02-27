@@ -6,9 +6,10 @@ import Website.Template
 import Control.Monad
 import Text.Blaze.Html5 hiding (map)
 import Text.Blaze.Html5.Attributes
-import Text.Blaze.Renderer.String
+import Text.Blaze.Html.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
+import System.IO.Error
 
 genTeamPages :: PartialToken -> IO ()
 genTeamPages partial = mapM_ (makePage token) $ teamList token
@@ -21,7 +22,7 @@ makePage token team = do
   if hasImage
      then copyFile ("images/"++image) ("site/"++image)
      else putStrLn $ "No image was found for " ++ show (number team)
-  comments <- catch
+  comments <- catchIOError
               (readFile (show $ number team)) $
               \_ -> return ""
   let html = template token hasImage comments team
