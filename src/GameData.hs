@@ -2,9 +2,11 @@ module GameData (
   TeamInfo(..),
   MatchInfo (..),
   Alliance (..),
-  Color (..)
+  Color (..),
+  matchNum
   ) where
 import Data.String.Utils
+import Prelude hiding (round)
 -- | A data type which is used to represent all known information and averages of about a team.
 data TeamInfo = TeamInfo {
   number    :: Int, -- | The team's number (ex 1816)
@@ -33,3 +35,6 @@ data Alliance = Alliance {
 -- | MatchInfo is just a nice wrapper to make dealing with the full information of a match
 -- (2 alliances) less finger work.
 newtype MatchInfo = MatchInfo (Alliance, Alliance)
+
+matchNum :: MatchInfo -> String
+matchNum (MatchInfo (a, _)) = round a

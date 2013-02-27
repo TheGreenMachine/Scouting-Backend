@@ -10,23 +10,40 @@ import Text.Blaze.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import GameData
-genIndex :: [TeamInfo] -> IO ()
-genIndex teams = do
-  let orderedList = sortBy (rcompare `on` snd)$ zip teams (map average teams)
-  let html = template orderedList
-  writeFile "site/index.html" $ renderHtml html
+import Website.Template
+genIndex :: PartialToken -> IO ()
+genIndex partial = do
+  let templateGen = map $ \(name, selector) -> template token name .
+                                               sortBy
+                                                (rcompare `on` selector . fst) $
+                                                zip teams (map average teams)
+  let [autoIndex, mainIndex, climbIndex, avgIndex] =
+        map renderHtml $ templateGen [("Autonomous", auto)
+                                    ,("Teleop", main)
+                                    ,("Climbing", climb)
+                                    ,("Average", average)]
+  putStrLn "Writing autonomous index"
+  writeFile "site/auto.html"  $ autoIndex
+  putStrLn "Writing teleop index"
+  writeFile "site/main.html"  $ mainIndex
+  putStrLn "Writing climbing index"
+  writeFile "site/climb.html" $ climbIndex
+  putStrLn "Writing average index"
+  writeFile "site/index.html" $ avgIndex
   where
-    average team =  (sum . map ($team) $ [auto, main, climb]) / 3
+    token        = partial "./"
+    teams        = teamList token
+    average team = (sum . map ($team) $ [auto, main, climb]) / 3
     rcompare a b = case compare a b of
       LT -> GT
       GT -> LT
       EQ -> EQ
-template :: [(TeamInfo, Double)] -> Html
-template list = docTypeHtml $ do
+template :: TemplateToken -> String -> [(TeamInfo, Double)] -> Html
+template token name list = wrapTemplate token $ do
   H.head $ do
     H.title "Home"
   body $ do
-    h1 "Main Team Index"
+    h1 . toHtml $ name ++ " Team Index"
     table ! customAttribute "border" "1"
           ! customAttribute "cellpadding" "10" $ do
       th $ h2 "Rank"

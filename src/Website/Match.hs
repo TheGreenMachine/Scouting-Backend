@@ -1,27 +1,28 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, TupleSections #-}
 module Website.Match where
 import System.Directory
 import GameData
+import Website.Template
 import Control.Monad
-import Text.Blaze.Html5
+import Text.Blaze.Html5 hiding (map)
 import Text.Blaze.Html5.Attributes
 import Text.Blaze.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Prelude hiding (round)
 
-genMatchPages :: [MatchInfo] -> IO ()
-genMatchPages = mapM_ makePage
+genMatchPages :: PartialToken -> IO ()
+genMatchPages partial = mapM_ (makePage token) $ matchList token
+                        where token = partial "../"
 
-makePage :: MatchInfo -> IO ()
-makePage match = do
-  let html = template match
-  let MatchInfo (a, _) = match
-  writeFile ("site/matches/" ++ round a ++ ".html") $ renderHtml html
-  putStrLn $ "Generate page for match " ++ round a
+makePage :: TemplateToken -> MatchInfo -> IO ()
+makePage token match = do
+  let html = template token match
+  writeFile ("site/matches/" ++ matchNum match  ++ ".html") $ renderHtml html
+  putStrLn $ "Generate page for match " ++ matchNum match
 
-template :: MatchInfo -> Html
-template (MatchInfo (a1, a2)) = docTypeHtml $ do
+template :: TemplateToken -> MatchInfo -> Html
+template token (MatchInfo (a1, a2)) = wrapTemplate token $ do
   H.head $ do
     H.title . toHtml $ "Match number " ++ (round a1)
   body $ do

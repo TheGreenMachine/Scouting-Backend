@@ -2,18 +2,20 @@
 module Website.Team where
 import System.Directory
 import GameData
+import Website.Template
 import Control.Monad
-import Text.Blaze.Html5
+import Text.Blaze.Html5 hiding (map)
 import Text.Blaze.Html5.Attributes
 import Text.Blaze.Renderer.String
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 
-genTeamPages :: [TeamInfo] -> IO ()
-genTeamPages = mapM_ makePage
+genTeamPages :: PartialToken -> IO ()
+genTeamPages partial = mapM_ (makePage token) $ teamList token
+                       where token = partial "./"
 
-makePage :: TeamInfo -> IO ()
-makePage team = do
+makePage :: TemplateToken -> TeamInfo -> IO ()
+makePage token team = do
   let image = show (number team) ++ ".jpg"
   hasImage <- doesFileExist $ "images/" ++ image
   if hasImage
@@ -22,24 +24,23 @@ makePage team = do
   comments <- catch
               (readFile (show $ number team)) $
               \_ -> return ""
-  let html = template hasImage comments team
+  let html = template token hasImage comments team
   writeFile ("site/"++(show $ number team)++".html") $ renderHtml html
   putStr "Wrote out page for team "
   print $ number team
 
-template :: Bool -> String -> TeamInfo -> Html
-template hasImage comments (TeamInfo num
+template :: TemplateToken -> Bool -> String -> TeamInfo -> Html
+template token hasImage comments (TeamInfo num
           autoScore
           mainScore
           didClimb
           climbScore
           penList
-          matchList) = docTypeHtml $ do
+          matchList) = wrapTemplate token $ do
   let numString = show num
   H.head $ do
     H.title . toHtml $ "Team "++numString
   body $ do
-    a!href "index.html" $ "Back to Main Index"
     h1 . toHtml $ "Team "++numString
     if hasImage
       then img ! src (toValue $ numString++".jpg")
