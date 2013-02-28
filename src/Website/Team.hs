@@ -43,7 +43,7 @@ template token hasImage comments (TeamInfo num
     H.title . toHtml $ "Team "++numString
   body $ do
     h1 . toHtml $ "Team "++numString
-    img ! src $ if hasImage
+    (!) img . src $ if hasImage
                 then toValue $ numString++".jpg"
                 else "noimage.jpg"
     h3 "Averages"

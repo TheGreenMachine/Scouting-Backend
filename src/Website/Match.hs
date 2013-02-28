@@ -37,7 +37,7 @@ allTemplate (Alliance roundNum
           team2Num
           team3Num
           scoreT) = docTypeHtml .
-  body $
+  body $ do
     h2 . toHtml $ show colorT
     h3.toHtml $ "Score: "++scoreT
     h3 "Teams"

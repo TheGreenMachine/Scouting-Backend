@@ -45,7 +45,7 @@ getPenalties :: TeamCSV -> Maybe [String]
 getPenalties csv = do
   let fields = map (split "|") . lines $ csv
   penalties <-  mapM
-    (`atMay` line 5)
+    (`atMay` 5)
     fields
   return $ filter (/="none") penalties
 
