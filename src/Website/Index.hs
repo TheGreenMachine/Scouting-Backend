@@ -23,13 +23,13 @@ genIndex partial = do
                                     ,("Climbing", climb)
                                     ,("Average", average)]
   putStrLn "Writing autonomous index"
-  writeFile "site/auto.html"  $ autoIndex
+  writeFile "site/auto.html"  autoIndex
   putStrLn "Writing teleop index"
-  writeFile "site/main.html"  $ mainIndex
+  writeFile "site/main.html" mainIndex
   putStrLn "Writing climbing index"
-  writeFile "site/climb.html" $ climbIndex
+  writeFile "site/climb.html" climbIndex
   putStrLn "Writing average index"
-  writeFile "site/index.html" $ avgIndex
+  writeFile "site/index.html" avgIndex
   where
     token        = partial "./"
     teams        = teamList token
@@ -40,7 +40,7 @@ genIndex partial = do
       EQ -> EQ
 template :: TemplateToken -> String -> [(TeamInfo, Double)] -> Html
 template token name list = wrapTemplate token $ do
-  H.head $ do
+  H.head $
     H.title "Home"
   body $ do
     h1 . toHtml $ name ++ " Team Index"

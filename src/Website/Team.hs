@@ -26,7 +26,7 @@ makePage token team = do
               (readFile (show $ number team)) $
               \_ -> return ""
   let html = template token hasImage comments team
-  writeFile ("site/"++(show $ number team)++".html") $ renderHtml html
+  writeFile ("site/"++ show (number team)++".html") $ renderHtml html
   putStr "Wrote out page for team "
   print $ number team
 
@@ -39,13 +39,13 @@ template token hasImage comments (TeamInfo num
           penList
           matchList) = wrapTemplate token $ do
   let numString = show num
-  H.head $ do
+  H.head .
     H.title . toHtml $ "Team "++numString
   body $ do
     h1 . toHtml $ "Team "++numString
-    if hasImage
-      then img ! src (toValue $ numString++".jpg")
-      else img ! src "noimage.jpg"
+    img ! src $ if hasImage
+                then toValue $ numString++".jpg"
+                else "noimage.jpg"
     h3 "Averages"
     ul $ do
       li . toHtml $ "Autonomous: " ++ show autoScore
@@ -57,4 +57,4 @@ template token hasImage comments (TeamInfo num
     p $ toHtml comments
     h3 "Matches"
     ul $ mapM_
-      (\n -> li $ a ! href (toValue $ "matches/"++show n++".html") $ (toHtml n)) matchList
+      (\n -> li $ a ! href (toValue $ "matches/"++show n++".html") $ toHtml n) matchList

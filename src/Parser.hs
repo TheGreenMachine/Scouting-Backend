@@ -36,7 +36,7 @@ checkClimb :: TeamCSV -> Maybe Bool
 checkClimb csv = do
   let fields = map (split "|") . lines $ csv
   scores <- mapM (\line -> atMay line 3 >>= readMay) fields :: Maybe [Int]
-  return $ (sum scores) > 0
+  return $ sum scores > 0
 
 getClimb :: TeamCSV -> Maybe Double
 getClimb = averageField 4
@@ -45,7 +45,7 @@ getPenalties :: TeamCSV -> Maybe [String]
 getPenalties csv = do
   let fields = map (split "|") . lines $ csv
   penalties <-  mapM
-    (\line -> atMay line 5)
+    (`atMay` line 5)
     fields
   return $ filter (/="none") penalties
 
@@ -53,7 +53,7 @@ averageField :: Int -> TeamCSV -> Maybe Double
 averageField n csv = do
   let fields = map (split "|") . lines $ csv
   scores <- mapM (\line -> atMay line n >>= readMay ) fields :: Maybe [Double]
-  return $ (sum scores) / (fromIntegral $ length scores)
+  return $ sum scores / fromIntegral (length scores)
 
 ---------------------------- Match Parser --------------------------------------
 type MatchNum = Int

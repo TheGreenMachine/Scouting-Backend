@@ -23,10 +23,10 @@ makePage token match = do
 
 template :: TemplateToken -> MatchInfo -> Html
 template token (MatchInfo (a1, a2)) = wrapTemplate token $ do
-  H.head $ do
-    H.title . toHtml $ "Match number " ++ (round a1)
+  H.head $
+    H.title . toHtml $ "Match number " ++ round a1
   body $ do
-    h1 . toHtml $ "Match number " ++ (round a1)
+    h1 . toHtml $ "Match number " ++ round a1
     allTemplate a1
     allTemplate a2
 
@@ -36,8 +36,8 @@ allTemplate (Alliance roundNum
           team1Num
           team2Num
           team3Num
-          scoreT) = docTypeHtml $ do
-  body $ do
+          scoreT) = docTypeHtml .
+  body $
     h2 . toHtml $ show colorT
     h3.toHtml $ "Score: "++scoreT
     h3 "Teams"
