@@ -23,7 +23,7 @@ makePage token team = do
      then copyFile ("images/"++image) ("site/"++image)
      else putStrLn $ "No image was found for " ++ show (number team)
   comments <- catchIOError
-              (readFile (show $ number team)) $
+              (readFile ("comments/"++show (number team) ++ ".txt")) $
               \_ -> return ""
   let html = template token hasImage comments team
   writeFile ("site/"++ show (number team)++".html") $ renderHtml html
