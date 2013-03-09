@@ -64,6 +64,6 @@ parseMatch num csv = do
   liftM MatchInfo $ liftM2 (,) (parseAlliance firstAlliance) (parseAlliance secondAlliance)
   where
     parseAlliance line = do
-      let [color, team1, team2, team3, score] = split "|"  line
-      c <- readMay color >>= \n -> return (if n == 0 then Blue else Red)
-      return $ Alliance (show num) c team1 team2 team3 score
+      let [color, team1, team2, team3] = split "|"  line
+      c <- return (if color == "blue" then Blue else Red)
+      return $ Alliance (show num) c team1 team2 team3 (-1)
